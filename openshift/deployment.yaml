@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openstack-info-credentials
+  labels:
+    app: openstack-info
+type: Opaque
+stringData:
+  OS_USERNAME: "your-username-here"
+  OS_PASSWORD: "your-password-here"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openstack-info-reports
+  labels:
+    app: openstack-info
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: openstack-info-report
+  labels:
+    app: openstack-info
+spec:
+  # Job will complete after successful execution
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3  # Retry up to 3 times on failure
+  
+  template:
+    metadata:
+      labels:
+        app: openstack-info
+    spec:
+      restartPolicy: Never
+      
+      # Use restricted security context (OpenShift default)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      
+      containers:
+      - name: openstack-info
+        image: openstack-info:latest
+        imagePullPolicy: IfNotPresent
+        
+        # Security context for container
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          runAsGroup: 1001
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: false  # We need to write to /app/reports
+        
+        # Environment variables
+        env:
+        - name: OS_AUTH_URL
+          value: "https://keystone.example.com:5000/v3"  # Replace with your auth URL
+        - name: OS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: openstack-info-credentials
+              key: OS_USERNAME
+        - name: OS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openstack-info-credentials
+              key: OS_PASSWORD
+        - name: OS_PROJECT_NAME
+          value: "monitoring"  # Replace with your project name
+        - name: OS_USER_DOMAIN_NAME
+          value: "default"
+        - name: OS_PROJECT_DOMAIN_NAME
+          value: "default"
+        - name: OS_REGION_NAME
+          value: "RegionOne"  # Replace with your region
+        - name: OS_INTERFACE
+          value: "public"
+        
+        # Command to run - generates timestamped reports
+        args:
+        - "--instances-file"
+        - "/app/reports/instances_$(date +%Y%m%d_%H%M%S).csv"
+        - "--hypervisors-file" 
+        - "/app/reports/hypervisors_$(date +%Y%m%d_%H%M%S).csv"
+        
+        # Volume mounts
+        volumeMounts:
+        - name: reports
+          mountPath: /app/reports
+        
+        # Resource limits
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+      
+      volumes:
+      - name: reports
+        persistentVolumeClaim:
+          claimName: openstack-info-reports

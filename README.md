@@ -46,6 +46,7 @@ A powerful Python script that retrieves detailed OpenStack instance and hypervis
 - 📊 **CSV Export** - Ready-to-analyze data in spreadsheet format
 - 🎯 **Selective Export** - Choose instances only, hypervisors only, or both
 - 📈 **Overcommit Analysis** - Identify resource allocation vs physical capacity
+- 🐳 **Container Ready** - Docker, Podman, and OpenShift compatible
 
 ## 🔄 How It Works
 
@@ -70,6 +71,8 @@ A powerful Python script that retrieves detailed OpenStack instance and hypervis
 - [📁 Output Files](#-output-files)
 - [🎯 Data Separation Benefits](#-data-separation-benefits)
 - [🚀 Usage Examples](#-usage-examples)
+- [📚 More Examples](#-more-examples)
+- [🐳 Container Usage](#-container-usage)
 - [⚠️ Error Handling](#️-error-handling)
 - [🔧 Troubleshooting](#-troubleshooting)
 - [🛠️ Development](#️-development)
@@ -389,6 +392,54 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
+## 📚 More Examples
+
+For comprehensive usage examples and templates, see the **`examples/`** directory:
+
+- **`examples/basic_usage.sh`** - Common usage patterns
+- **`examples/advanced_usage.sh`** - Advanced scenarios and scripting ideas
+- **`examples/sample_outputs/`** - Example CSV output files
+
+```bash
+# Quick start with examples
+cd examples
+./basic_usage.sh      # Show basic examples
+./advanced_usage.sh   # Show advanced examples
+```
+
+## 🐳 Container Usage
+
+The tool is available as a container image compatible with Docker, Podman, and OpenShift.
+
+### Quick Start
+```bash
+# Build the image
+docker build -t openstack-info:latest .
+
+# Run with environment variables
+docker run --rm \
+  -e OS_AUTH_URL=https://keystone.example.com:5000/v3 \
+  -e OS_USERNAME=myuser \
+  -e OS_PASSWORD=mypass \
+  -e OS_PROJECT_NAME=myproject \
+  -v $(pwd)/reports:/app/reports \
+  openstack-info:latest --instances-only
+
+# Use docker-compose
+docker-compose run --rm openstack-info --help
+```
+
+### OpenShift Deployment
+```bash
+# Deploy one-shot job to OpenShift
+oc apply -f openshift/job.yaml
+
+# Run the report job
+oc create job my-report --from=job/openstack-info-report
+```
+
+📖 **For detailed container usage, see [CONTAINER.md](CONTAINER.md)**
+
 ## 🛠️ Development
 
 ### Setup Development Environment
@@ -421,13 +472,26 @@ os-info/
 ├── os_info.py              # Main application
 ├── test_os_info.py         # Test suite
 ├── README.md              # Documentation
+├── CONTAINER.md           # Container usage guide
 ├── requirements.txt        # Production dependencies
 ├── requirements-test.txt   # Testing dependencies
 ├── pytest.ini            # Test configuration
 ├── Makefile              # Development commands
-├── openstack.conf.example # Configuration template
 ├── test_config.conf      # Test configuration
-└── .gitignore            # Git ignore rules
+├── Dockerfile            # Container image definition
+├── .dockerignore         # Docker build exclusions
+├── docker-compose.yml    # Docker Compose configuration
+├── .gitignore            # Git ignore rules
+├── examples/             # Usage examples and templates
+│   ├── README.md             # Examples documentation
+│   ├── openstack.conf.example # Configuration template
+│   ├── basic_usage.sh        # Basic usage examples
+│   ├── advanced_usage.sh     # Advanced scenarios
+│   └── sample_outputs/       # Example CSV files
+│       ├── sample_instances.csv
+│       └── sample_hypervisors.csv
+└── openshift/            # OpenShift deployment files
+    └── job.yaml              # One-shot job and core resources
 ```
 
 ### Code Quality

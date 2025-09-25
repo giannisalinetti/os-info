@@ -1,0 +1,66 @@
+# Docker build context exclusions
+
+# Git repository
+.git/
+.gitignore
+
+# Python cache and temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+
+# Generated reports and data
+*.csv
+!examples/sample_outputs/sample_*.csv
+
+# Configuration files (secrets)
+openstack.conf
+*.env
+.env
+
+# Development and testing files
+test_*
+pytest.ini
+requirements-test.txt
+Makefile
+
+# Documentation and examples we don't need in container
+README.md
+examples/README.md
+examples/*.sh
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+*.log
+*.bak
+*.backup
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

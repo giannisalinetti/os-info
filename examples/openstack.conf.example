@@ -1,0 +1,24 @@
+# OpenStack Configuration File Example
+# Copy this file to openstack.conf and update with your credentials
+#
+# The script will automatically look for configuration files in these locations:
+# 1. ~/.config/openstack/clouds.ini
+# 2. ~/.openstack/config  
+# 3. ./openstack.conf (current directory)
+
+[openstack]
+# Required authentication parameters
+auth_url = https://keystone.example.com:5000/v3
+username = your_username
+password = your_password
+project_name = your_project_name
+
+# Optional parameters with defaults
+user_domain_name = default
+project_domain_name = default
+region_name = RegionOne
+interface = public
+
+# Additional optional parameters:
+# application_credential_id = your_app_cred_id
+# application_credential_secret = your_app_cred_secret

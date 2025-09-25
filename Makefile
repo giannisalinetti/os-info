@@ -87,6 +87,10 @@ clean:
 	find . -name "*.swp" -delete
 	find . -name "*.swo" -delete
 	find . -name ".DS_Store" -delete
+	find . -name "*.ps" -delete
+	find . -name "*.eps" -delete
+	find . -name "*.ps3" -delete
+	find . -name "*.eps3" -delete
 
 # Run the main script (requires OpenStack credentials)
 run:

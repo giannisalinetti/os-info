@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  openstack-info:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: openstack-info:latest
+    
+    # Environment variables for OpenStack authentication
+    # Set these in a .env file or pass them via command line
+    environment:
+      - OS_AUTH_URL=${OS_AUTH_URL:-}
+      - OS_USERNAME=${OS_USERNAME:-}
+      - OS_PASSWORD=${OS_PASSWORD:-}
+      - OS_PROJECT_NAME=${OS_PROJECT_NAME:-}
+      - OS_USER_DOMAIN_NAME=${OS_USER_DOMAIN_NAME:-default}
+      - OS_PROJECT_DOMAIN_NAME=${OS_PROJECT_DOMAIN_NAME:-default}
+      - OS_REGION_NAME=${OS_REGION_NAME:-}
+      - OS_INTERFACE=${OS_INTERFACE:-public}
+    
+    # Volumes for configuration and output
+    volumes:
+      - ./reports:/app/reports
+      - ./config:/app/config:ro
+    
+    # Override default command if needed
+    # command: ["--instances-only", "--instances-file", "/app/reports/instances.csv"]
+    
+    # For interactive mode, uncomment:
+    # stdin_open: true
+    # tty: true
+    
+    # Security context (similar to OpenShift SCC)
+    user: "1001:1001"
+    
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+# Optional: Create named volumes
+volumes:
+  reports:
+    driver: local
+  config:
+    driver: local

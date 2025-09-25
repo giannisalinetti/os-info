@@ -188,8 +188,15 @@ Thumbs.db
 
 # Project specific files
 *.csv
+!examples/sample_outputs/sample_*.csv  # Keep sample CSV files
 openstack.conf
+!examples/openstack.conf.example  # Keep example config
 test_config_temp.conf
+
+# Container and deployment files
+reports/
+config/
+.env
 
 # Temporary files
 *.tmp
@@ -203,3 +210,26 @@ tmp/
 # Backup files
 *.bak
 *.backup
+
+# Generated documentation and images
+*.ps
+*.eps
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.svg
+
+# ImageMagick generated files
+*.ps3
+*.eps3
+
+# Documentation build artifacts
+docs/
+doc/
+_build/
+.tox/
+htmlcov/

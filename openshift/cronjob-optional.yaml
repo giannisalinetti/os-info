@@ -1,0 +1,113 @@
+# Optional CronJob for scheduled OpenStack reporting
+# Deploy this only if you need scheduled execution
+# Usage: oc apply -f cronjob-optional.yaml
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: openstack-info-scheduled
+  labels:
+    app: openstack-info
+    component: scheduler
+spec:
+  # Schedule: Daily at 6 AM UTC
+  schedule: "0 6 * * *"
+  
+  # Job history limits
+  successfulJobsHistoryLimit: 7   # Keep last 7 successful jobs
+  failedJobsHistoryLimit: 3       # Keep last 3 failed jobs
+  
+  # Prevent concurrent executions
+  concurrencyPolicy: Forbid
+  
+  # Job template
+  jobTemplate:
+    spec:
+      # Job configuration
+      completions: 1
+      parallelism: 1
+      backoffLimit: 2  # Retry up to 2 times on failure
+      
+      template:
+        metadata:
+          labels:
+            app: openstack-info
+            component: scheduler
+        spec:
+          restartPolicy: Never
+          
+          # Use restricted security context (OpenShift default)
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            seccompProfile:
+              type: RuntimeDefault
+          
+          containers:
+          - name: openstack-info
+            image: openstack-info:latest
+            imagePullPolicy: IfNotPresent
+            
+            # Security context for container
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+              runAsUser: 1001
+              runAsGroup: 1001
+              capabilities:
+                drop:
+                - ALL
+              readOnlyRootFilesystem: false  # We need to write to /app/reports
+            
+            # Environment variables
+            env:
+            - name: OS_AUTH_URL
+              value: "https://keystone.example.com:5000/v3"  # Replace with your auth URL
+            - name: OS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: openstack-info-credentials
+                  key: OS_USERNAME
+            - name: OS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: openstack-info-credentials
+                  key: OS_PASSWORD
+            - name: OS_PROJECT_NAME
+              value: "monitoring"  # Replace with your project name
+            - name: OS_USER_DOMAIN_NAME
+              value: "default"
+            - name: OS_PROJECT_DOMAIN_NAME
+              value: "default"
+            - name: OS_REGION_NAME
+              value: "RegionOne"  # Replace with your region
+            - name: OS_INTERFACE
+              value: "public"
+            
+            # Command to run - generates daily timestamped reports
+            args:
+            - "--instances-file"
+            - "/app/reports/daily_instances_$(date +%Y%m%d).csv"
+            - "--hypervisors-file" 
+            - "/app/reports/daily_hypervisors_$(date +%Y%m%d).csv"
+            
+            # Volume mounts
+            volumeMounts:
+            - name: reports
+              mountPath: /app/reports
+            
+            # Resource limits (can be lower for scheduled jobs)
+            resources:
+              limits:
+                cpu: 300m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+          
+          volumes:
+          - name: reports
+            persistentVolumeClaim:
+              claimName: openstack-info-reports
