@@ -16,8 +16,17 @@ A comprehensive Python script to retrieve detailed OpenStack instance and hyperv
 - Python 3.6+
 - OpenStack SDK (`python-openstacksdk`)
 
+### Installation
+
 ```bash
+# Install production dependencies
+pip install -r requirements.txt
+
+# Or install OpenStack SDK directly
 pip install openstacksdk
+
+# For development (includes testing tools)
+make install-dev
 ```
 
 ## Authentication Methods
@@ -348,6 +357,7 @@ os-info/
 ├── os_info.py              # Main application
 ├── test_os_info.py         # Test suite
 ├── README.md              # Documentation
+├── requirements.txt        # Production dependencies
 ├── requirements-test.txt   # Testing dependencies
 ├── pytest.ini            # Test configuration
 ├── Makefile              # Development commands

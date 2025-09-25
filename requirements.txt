@@ -1,0 +1,5 @@
+# Production requirements for OpenStack Info Tool
+# Install with: pip install -r requirements.txt
+
+# OpenStack SDK - main dependency
+openstacksdk>=0.61.0

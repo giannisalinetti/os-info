@@ -1,12 +1,13 @@
 # Makefile for OpenStack Info Tool
 
-.PHONY: help install install-dev test test-verbose test-coverage lint format clean
+.PHONY: help install install-dev install-editable test test-verbose test-coverage lint format clean
 
 # Default target
 help:
 	@echo "Available targets:"
 	@echo "  install       - Install production dependencies"
 	@echo "  install-dev   - Install development and testing dependencies"
+	@echo "  install-editable - Install in development mode"
 	@echo "  test          - Run tests"
 	@echo "  test-verbose  - Run tests with verbose output"
 	@echo "  test-coverage - Run tests with coverage report"
@@ -16,11 +17,16 @@ help:
 
 # Install production dependencies
 install:
-	pip install openstacksdk
+	pip install -r requirements.txt
 
 # Install development and testing dependencies
 install-dev:
+	pip install -r requirements.txt
 	pip install -r requirements-test.txt
+
+# Install in development mode
+install-editable:
+	pip install -e .
 
 # Run tests
 test:

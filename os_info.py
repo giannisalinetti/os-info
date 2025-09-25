@@ -1,4 +1,3 @@
-import openstack
 import os
 import csv
 import argparse
@@ -6,6 +5,14 @@ import configparser
 import getpass
 import sys
 from datetime import datetime, timezone
+
+# Conditional import for OpenStack SDK
+try:
+    import openstack
+    OPENSTACK_AVAILABLE = True
+except ImportError:
+    OPENSTACK_AVAILABLE = False
+    openstack = None
 
 def load_config_file(config_path):
     """
@@ -137,6 +144,14 @@ def setup_openstack_connection(auth_method='auto', config_file=None, **kwargs):
     Returns:
         openstack.connection.Connection: OpenStack connection object
     """
+    if not OPENSTACK_AVAILABLE:
+        raise ImportError(
+            "OpenStack SDK is not installed. Please install it with:\n"
+            "pip install openstacksdk\n"
+            "or\n"
+            "pip install -r requirements-test.txt"
+        )
+    
     auth_config = {}
     
     if auth_method == 'auto':
@@ -499,6 +514,16 @@ if __name__ == "__main__":
     try:
         # Parse command line arguments
         args = parse_arguments()
+        
+        # Check if OpenStack SDK is available
+        if not OPENSTACK_AVAILABLE:
+            print("❌ OpenStack SDK is not installed!")
+            print("\nTo use this tool, please install the OpenStack SDK:")
+            print("  pip install openstacksdk")
+            print("\nOr install all development dependencies:")
+            print("  pip install -r requirements-test.txt")
+            print("\nFor more information, see the README.md file.")
+            sys.exit(1)
         
         # Handle export shortcuts
         if args.instances_only:
