@@ -1,0 +1,23 @@
+# Testing requirements for OpenStack Info Tool
+# Install with: pip install -r requirements-test.txt
+
+# Core dependencies
+openstacksdk>=0.61.0
+
+# Testing framework
+pytest>=6.0.0
+pytest-cov>=2.10.0
+pytest-mock>=3.6.0
+
+# Code quality and linting
+flake8>=3.8.0
+black>=21.0.0
+isort>=5.0.0
+
+# Test utilities
+mock>=4.0.0
+coverage>=5.0.0
+
+# Optional: for more advanced testing
+tox>=3.20.0
+factory-boy>=3.2.0
