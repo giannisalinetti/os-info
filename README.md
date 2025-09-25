@@ -1,17 +1,81 @@
+```
+ ██████╗ ███████╗      ██╗███╗   ██╗███████╗ ██████╗ 
+██╔═══██╗██╔════╝      ██║████╗  ██║██╔════╝██╔═══██╗
+██║   ██║███████╗█████╗██║██╔██╗ ██║█████╗  ██║   ██║
+██║   ██║╚════██║╚════╝██║██║╚██╗██║██╔══╝  ██║   ██║
+╚██████╔╝███████║      ██║██║ ╚████║██║     ╚██████╔╝
+ ╚═════╝ ╚══════╝      ╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ 
+                                                      
+    ┌─────────────────────────────────────────────┐
+    │  📊 OpenStack Information Export Tool 📈   │
+    │                                             │
+    │  🔍 Instance Details  •  🖥️  Hypervisors   │
+    │  ⚡ Multiple Auth     •  📋 CSV Export      │
+    │  🛡️  Secure          •  📈 Overcommit      │
+    └─────────────────────────────────────────────┘
+```
+
 # OpenStack Information Export Tool
 
-A comprehensive Python script to retrieve detailed OpenStack instance and hypervisor information and export it to CSV files. The tool supports multiple authentication methods for flexibility in different environments.
+<div align="center">
 
-## Features
+![Python](https://img.shields.io/badge/python-3.6+-blue.svg)
+![OpenStack](https://img.shields.io/badge/OpenStack-SDK-red.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-active-brightgreen.svg)
 
-- Export detailed instance information (VMs, networks, volumes, etc.)
-- Export hypervisor statistics and utilization
-- Multiple authentication methods (environment variables, config files, command line, interactive)
-- Automatic authentication method detection
-- Comprehensive error handling and validation
-- CSV output for easy data analysis
+**A comprehensive Python tool for OpenStack infrastructure analysis and reporting**
 
-## Requirements
+*🔍 Extract • 📊 Analyze • 📈 Export*
+
+</div>
+
+---
+
+## 🌟 Overview
+
+A powerful Python script that retrieves detailed OpenStack instance and hypervisor information and exports it to CSV files. Designed for infrastructure teams, cloud administrators, and DevOps engineers who need comprehensive OpenStack environment analysis.
+
+### ✨ Key Features
+
+- 🖥️ **Instance Analysis** - Export detailed VM information (networks, volumes, flavors, metadata)
+- 🏗️ **Hypervisor Monitoring** - CPU/Memory overcommit ratios, utilization statistics
+- 🔐 **Multiple Authentication** - Environment variables, config files, CLI args, interactive
+- ⚡ **Smart Detection** - Automatic authentication method detection
+- 🛡️ **Error Handling** - Comprehensive validation and user-friendly error messages
+- 📊 **CSV Export** - Ready-to-analyze data in spreadsheet format
+- 🎯 **Selective Export** - Choose instances only, hypervisors only, or both
+- 📈 **Overcommit Analysis** - Identify resource allocation vs physical capacity
+
+## 🔄 How It Works
+
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐
+│   🔐 Auth   │───▶│   🌩️ Query   │───▶│  📊 Process │───▶│  📄 Export  │
+│             │    │   OpenStack   │    │    Data     │    │     CSV     │
+│ • Env Vars  │    │               │    │             │    │             │
+│ • Config    │    │ • Instances   │    │ • Calculate │    │ • Instances │
+│ • CLI Args  │    │ • Hypervisors │    │ • Correlate │    │ • Hypervisors│
+│ • Interactive│   │ • Flavors     │    │ • Analyze   │    │ • Overcommit│
+└─────────────┘    └──────────────┘    └─────────────┘    └─────────────┘
+```
+
+## 📋 Table of Contents
+
+- [🌟 Overview](#-overview)
+- [🔄 How It Works](#-how-it-works)
+- [⚙️ Requirements](#️-requirements)
+- [🔐 Authentication Methods](#-authentication-methods)
+- [💻 Command Line Options](#-command-line-options)
+- [📁 Output Files](#-output-files)
+- [🎯 Data Separation Benefits](#-data-separation-benefits)
+- [🚀 Usage Examples](#-usage-examples)
+- [⚠️ Error Handling](#️-error-handling)
+- [🔧 Troubleshooting](#-troubleshooting)
+- [🛠️ Development](#️-development)
+- [📄 License](#-license)
+
+## ⚙️ Requirements
 
 - Python 3.6+
 - OpenStack SDK (`python-openstacksdk`)
@@ -29,7 +93,7 @@ pip install openstacksdk
 make install-dev
 ```
 
-## Authentication Methods
+## 🔐 Authentication Methods
 
 The tool supports five different authentication methods:
 
@@ -109,7 +173,7 @@ Prompt for credentials interactively:
 python os_info.py --auth-method interactive
 ```
 
-## Command Line Options
+## 💻 Command Line Options
 
 ```
 usage: os_info.py [-h] [--auth-method {auto,env,config,interactive,args}]
@@ -157,7 +221,7 @@ Output Options:
   --hypervisors-only    Export only hypervisor data (shortcut for --no-export-instances)
 ```
 
-## Output Files
+## 📁 Output Files
 
 ### Instance Data (openstack_instances.csv)
 Contains detailed information about all instances including:
@@ -189,7 +253,7 @@ Contains comprehensive hypervisor statistics including:
 - **Ratio > 1.0**: Resources are overcommitted
 - **Ratio ≤ 1.0**: Resources are not overcommitted
 
-## Data Separation Benefits
+## 🎯 Data Separation Benefits
 
 The tool provides flexible export options to optimize for different use cases:
 
@@ -225,7 +289,7 @@ The tool provides flexible export options to optimize for different use cases:
 | Billing/chargeback | `--instances-only` | User and project resource usage |
 | Troubleshooting | Both with custom filenames | Correlation between VMs and hosts |
 
-## Usage Examples
+## 🚀 Usage Examples
 
 ### Basic Usage
 ```bash
@@ -291,7 +355,7 @@ python os_info.py \
     --hypervisors-file "hypervisors_$(date +%Y%m%d).csv"
 ```
 
-## Error Handling
+## ⚠️ Error Handling
 
 The script includes comprehensive error handling for:
 - Missing authentication credentials
@@ -307,7 +371,7 @@ The script includes comprehensive error handling for:
 - Consider using application credentials instead of user passwords
 - Environment variables are recommended for automated deployments
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
@@ -325,7 +389,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-## Development
+## 🛠️ Development
 
 ### Setup Development Environment
 
@@ -384,6 +448,16 @@ The project follows Python best practices:
 5. Format code: `make format`
 6. Submit a pull request
 
-## License
+## 📄 License
 
 This project is open source and available under the MIT License.
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it useful! ⭐**
+
+Made with ❤️ for the OpenStack community
+
+</div>
