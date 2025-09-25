@@ -61,10 +61,26 @@ clean:
 	rm -rf .pytest_cache/
 	rm -rf htmlcov/
 	rm -rf .coverage
+	rm -rf .vscode/
+	rm -rf .idea/
+	rm -rf *.egg-info/
+	rm -rf build/
+	rm -rf dist/
+	rm -rf .tox/
+	rm -rf .mypy_cache/
 	rm -f coverage.xml
 	rm -f *.csv
+	rm -f *.log
+	rm -f *.tmp
+	rm -f *.temp
+	rm -f *.bak
+	rm -f *.backup
 	find . -name "*.pyc" -delete
 	find . -name "*.pyo" -delete
+	find . -name "*~" -delete
+	find . -name "*.swp" -delete
+	find . -name "*.swo" -delete
+	find . -name ".DS_Store" -delete
 
 # Run the main script (requires OpenStack credentials)
 run:

@@ -316,6 +316,64 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
+## Development
+
+### Setup Development Environment
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd os-info
+
+# Install development dependencies
+make install-dev
+
+# Run tests
+make test
+
+# Run with coverage
+make test-coverage
+
+# Format code
+make format
+
+# Clean up generated files
+make clean
+```
+
+### Project Structure
+
+```
+os-info/
+├── os_info.py              # Main application
+├── test_os_info.py         # Test suite
+├── README.md              # Documentation
+├── requirements-test.txt   # Testing dependencies
+├── pytest.ini            # Test configuration
+├── Makefile              # Development commands
+├── openstack.conf.example # Configuration template
+├── test_config.conf      # Test configuration
+└── .gitignore            # Git ignore rules
+```
+
+### Code Quality
+
+The project follows Python best practices:
+- **PEP 8** compliance
+- **Type hints** where appropriate
+- **Comprehensive testing** with pytest
+- **Code formatting** with black and isort
+- **Linting** with flake8
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `make test`
+5. Format code: `make format`
+6. Submit a pull request
+
 ## License
 
 This project is open source and available under the MIT License.
