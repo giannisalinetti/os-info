@@ -21,7 +21,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.6+-blue.svg)
 ![OpenStack](https://img.shields.io/badge/OpenStack-SDK-red.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)
 ![Status](https://img.shields.io/badge/status-active-brightgreen.svg)
 
 **A comprehensive Python tool for OpenStack infrastructure analysis and reporting**
@@ -482,6 +482,7 @@ os-info/
 ├── .dockerignore         # Docker build exclusions
 ├── docker-compose.yml    # Docker Compose configuration
 ├── .gitignore            # Git ignore rules
+├── LICENSE               # Apache 2.0 license
 ├── examples/             # Usage examples and templates
 │   ├── README.md             # Examples documentation
 │   ├── openstack.conf.example # Configuration template
@@ -514,7 +515,14 @@ The project follows Python best practices:
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+### Key Points:
+- ✅ **Open Source**: Free to use, modify, and distribute
+- ✅ **Commercial Use**: Allowed for commercial purposes
+- ✅ **Patent Protection**: Includes patent grant protection
+- ✅ **Attribution**: Copyright notice must be retained
+- ⚖️ **No Warranty**: Provided "as is" without warranties
 
 ---
 
